@@ -1,88 +1,58 @@
 # ⚽ AI吵个球 — 世界杯AI预测系统
 
-两个AI吵架预测世界杯，自动生成预测卡片，一键发布小红书。
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Python](https://img.shields.io/badge/python-3.8+-green)
 
-## 效果展示
+> 两个AI吵架预测世界杯，每天自动生成预测卡片，一键发小红书。
 
-每天自动生成这样的预测卡：
+<p align="center">
+  <img src="preview.png" width="360" alt="预测卡片预览">
+</p>
 
-- 弘历👑（玄学派）：永远选赢家，理由靠底蕴、天意、名将
-- 赫妹🔮（数据派）：经常预测平局，理由靠数据、概率、xG
+## 它能干嘛
 
-**两人永远不能预测一样的结果，制造冲突才有看点。**
+- 🔮 **双AI对战**：弘历👑（玄学派）vs 赫妹🔮（数据派），两人永远唱反调
+- 🃏 **自动生成卡片**：输入赛程 → 输出可直接发小红书的预测图
+- ⚡ **一键运行**：`python main.py` 搞定全流程
+- 🎨 **可定制**：换人设、换主题、换视觉风格，改Prompt就行
 
-## 快速开始
-
-### 1. 环境要求
-
-- Python 3.8+
-- Chrome浏览器（用于截图）
-- 任意LLM API（OpenAI / Claude / Groq / 通义千问 等）
-
-### 2. 安装
+## 30秒上手
 
 ```bash
-git clone https://github.com/yourname/ai-worldcup-predictor.git
+# 1. 克隆
+git clone https://github.com/cnjoe1130/ai-worldcup-predictor.git
 cd ai-worldcup-predictor
+
+# 2. 安装依赖
 pip install -r requirements.txt
-```
 
-### 3. 配置API
-
-复制配置文件并填入你的API Key：
-
-```bash
+# 3. 配置API（三选一）
 cp config.example.yaml config.yaml
-# 编辑 config.yaml，填入你的API Key
+# 编辑 config.yaml，填入你的 API Key
+# 推荐新手用 Groq（免费）：https://console.groq.com
+
+# 4. 一键生成
+python main.py
 ```
 
-### 4. 一键生成
+生成的图片在 `output/` 盯录，直接发小红书。
 
-```bash
-# 1. 获取今日赛程
-python scripts/fetch_schedule.py
+## 支持哪些LLM
 
-# 2. 生成预测
-python scripts/generate_predictions.py
+| 提供商 | 推荐模型 | 费用 | 难度 |
+|--------|---------|------|------|
+| Groq | llama-3.3-70b | 免费 | ⭐ |
+| OpenAI | gpt-4o-mini | 很便宜 | ⭐⭐ |
+| Claude | claude-3-haiku | 便宜 | ⭐⭐ |
+| 通义千问 | qwen-plus | 便宜 | ⭐⭐ |
 
-# 3. 生成卡片图
-python scripts/generate_cards.py
-
-# 4. 截图
-python scripts/screenshot.py
-```
-
-输出文件在 `output/` 目录下。
-
-## 项目结构
-
-```
-ai-worldcup-predictor/
-├── README.md              # 本文件
-├── config.example.yaml    # 配置模板
-├── requirements.txt       # Python依赖
-├── prompts/
-│   ├── hongli.txt         # 弘历人设Prompt
-│   ├── hermes.txt         # 赫妹人设Prompt
-│   └── schedule.txt       # 赛程提取Prompt
-├── templates/
-│   ├── prediction.html    # 预测卡HTML模板
-│   └── styles.css         # 卡片样式
-├── scripts/
-│   ├── fetch_schedule.py  # 赛程抓取
-│   ├── generate_predictions.py  # AI预测生成
-│   ├── generate_cards.py  # HTML卡片生成
-│   └── screenshot.py      # Chrome截图
-├── output/                # 输出目录
-└── docs/
-    └── customization.md   # 定制指南
-```
+新手推荐 **Groq**，注册即用，不花钱。
 
 ## 定制指南
 
 ### 换主题
 
-不只是世界杯！你可以换成任何预测主题：
+不只是世界杯！改Prompt就能换任何预测主题：
 
 | 主题 | 弘历人设 | 赫妹人设 |
 |------|---------|---------|
@@ -93,26 +63,40 @@ ai-worldcup-predictor/
 
 ### 换视觉风格
 
-修改 `templates/styles.css` 即可：
+修改 `templates/styles.css`：
 
-- 暗底科技风：当前默认
-- 动森暖色系：适合小红书泛受众
-- 杂志极简风：适合公众号
+- **暗底科技风**：当前默认，适合飞书/微信
+- **动森暖色系**：适合小红书泛受众
+- **杂志极简风**：适合公众号
 
-### 加互动功能
+## 项目结构
 
-扩展方向：
-- 弹幕抓取 → 观众投票
-- 积分排行榜 → 答题游戏
-- 礼物系统 → 直播互动
+```
+ai-worldcup-predictor/
+├── main.py                 # 一键运行入口
+├── config.example.yaml     # 配置模板
+├── requirements.txt        # Python依赖
+├── prompts/
+│   ├── hongli.txt          # 弘历人设Prompt
+│   ├── hermes.txt          # 赫妹人设Prompt
+│   └── schedule.txt        # 赛程提取Prompt
+├── templates/
+│   ├── prediction.html     # 预测卡HTML模板
+│   └── styles.css          # 卡片样式
+├── scripts/
+│   ├── fetch_schedule.py   # 赛程抓取
+│   ├── generate_predictions.py  # AI预测生成
+│   ├── generate_cards.py   # HTML卡片生成
+│   └── screenshot.py       # Chrome截图
+└── output/                 # 生成的图片
+```
 
-## 技术栈
+## 扩展方向
 
-- **LLM**: OpenAI / Claude / Groq / 通义千问（任选）
-- **数据**: Wikipedia API / FIFA官网
-- **模板**: HTML + CSS
-- **截图**: Chrome Headless
-- **发布**: 手动 / 可扩展自动化
+- [ ] 自动发布到小红书（定时任务）
+- [ ] 弹幕抓取 → 观众投票
+- [ ] 积分排行榜 → 答题游戏
+- [ ] 礼物系统 → 直播互动
 
 ## License
 
