@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    width: 1080px;
+    height: 1440px;
+    background: #0a0a0e;
+    font-family: 'Noto Sans SC', sans-serif;
+    color: #e8e6e1;
+    overflow: hidden;
+  }
+
+  .card {
+    width: 1080px;
+    height: 1440px;
+    background: linear-gradient(180deg, #0a0a0e 0%, #0f0f14 50%, #0a0a0e 100%);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  .brand {
+    position: relative; z-index: 1;
+    padding: 44px 60px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .brand-left {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: rgba(232,230,225,0.35);
+  }
+  .brand-right {
+    display: flex;
+    gap: 12px;
+  }
+  .tag {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    padding: 5px 14px;
+    border: 1px solid;
+  }
+  .tag-day {
+    color: #d4a853;
+    border-color: rgba(212,168,83,0.3);
+  }
+  .tag-match {
+    color: rgba(232,230,225,0.5);
+    border-color: rgba(255,255,255,0.1);
+  }
+
+  .match-header {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 48px 60px 0;
+  }
+  .match-teams {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 20px;
+  }
+  .team {
+    text-align: center;
+    width: 320px;
+  }
+  .team-flag {
+    font-size: 64px;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .team-name {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+  }
+  .vs {
+    font-family: 'Space Grotesk';
+    font-size: 32px;
+    font-weight: 700;
+    color: rgba(232,230,225,0.2);
+  }
+  .match-info {
+    font-size: 14px;
+    color: rgba(232,230,225,0.4);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  .divider {
+    position: relative; z-index: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 5%, rgba(255,255,255,0.06) 30%, rgba(255,255,255,0.06) 70%, transparent 95%);
+    margin: 32px 60px;
+  }
+
+  .predictions {
+    position: relative; z-index: 1;
+    padding: 0 60px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .pred-block {
+    padding: 32px 36px;
+    position: relative;
+  }
+  .pred-block.left {
+    background: rgba(212,168,83,0.04);
+    border-left: 3px solid rgba(212,168,83,0.4);
+    margin-right: 0;
+    margin-bottom: 16px;
+  }
+  .pred-block.right {
+    background: rgba(100,140,255,0.04);
+    border-left: 3px solid rgba(100,140,255,0.4);
+  }
+
+  .pred-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .pred-ai {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .pred-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .pred-avatar.hongli {
+    background: rgba(212,168,83,0.15);
+    border: 1px solid rgba(212,168,83,0.3);
+  }
+  .pred-avatar.hermes {
+    background: rgba(100,140,255,0.15);
+    border: 1px solid rgba(100,140,255,0.3);
+  }
+  .pred-name {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .pred-name.hongli { color: #d4a853; }
+  .pred-name.hermes { color: #648cff; }
+  .pred-style {
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(232,230,225,0.3);
+    letter-spacing: 0.1em;
+  }
+
+  .pred-result {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .pred-pick {
+    font-size: 26px;
+    font-weight: 900;
+  }
+  .pred-pick.hongli { color: #d4a853; }
+  .pred-pick.hermes { color: #648cff; }
+
+  .pred-reasons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .pred-reason {
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(232,230,225,0.65);
+  }
+  .pred-reason strong {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .cta {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 0 60px;
+    margin-top: auto;
+  }
+  .cta-question {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: 0.05em;
+  }
+  .cta-options {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+  .cta-btn {
+    padding: 12px 32px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.03);
+    color: rgba(232,230,225,0.6);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .footer {
+    position: relative; z-index: 1;
+    padding: 24px 60px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-tags {
+    font-size: 11px;
+    color: rgba(232,230,225,0.25);
+    letter-spacing: 0.05em;
+  }
+  .footer-disclaimer {
+    font-size: 10px;
+    color: rgba(232,230,225,0.2);
+    letter-spacing: 0.02em;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <!-- 品牌栏 -->
+  <div class="brand">
+    <div class="brand-left">⚽ AI吵个球</div>
+    <div class="brand-right">
+      <span class="tag tag-day">{{ day_tag }}</span>
+      <span class="tag tag-match">{{ group_tag }}</span>
+    </div>
+  </div>
+
+  <!-- 比赛信息 -->
+  <div class="match-header">
+    <div class="match-teams">
+      <div class="team">
+        <div class="team-flag">{{ team_a_flag }}</div>
+        <div class="team-name">{{ team_a_name }}</div>
+      </div>
+      <div class="vs">VS</div>
+      <div class="team">
+        <div class="team-flag">{{ team_b_flag }}</div>
+        <div class="team-name">{{ team_b_name }}</div>
+      </div>
+    </div>
+    <div class="match-info">{{ match_date }} · {{ match_time }} · {{ venue }}</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 预测区 -->
+  <div class="predictions">
+    <!-- 弘历 -->
+    <div class="pred-block left">
+      <div class="pred-header">
+        <div class="pred-ai">
+          <div class="pred-avatar hongli">👑</div>
+          <div class="pred-name hongli">弘历</div>
+          <div class="pred-style">玄学派</div>
+        </div>
+      </div>
+      <div class="pred-result">
+        <div class="pred-pick hongli">{{ hongli_prediction }}</div>
+      </div>
+      <div class="pred-reasons">
+        {% for reason in hongli_reasons %}
+        <div class="pred-reason">{{ reason }}</div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- 赫妹 -->
+    <div class="pred-block right">
+      <div class="pred-header">
+        <div class="pred-ai">
+          <div class="pred-avatar hermes">🔮</div>
+          <div class="pred-name hermes">赫妹</div>
+          <div class="pred-style">数据女王</div>
+        </div>
+      </div>
+      <div class="pred-result">
+        <div class="pred-pick hermes">{{ hermes_prediction }}</div>
+      </div>
+      <div class="pred-reasons">
+        {% for reason in hermes_reasons %}
+        <div class="pred-reason">{{ reason }}</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <div class="cta-question">⚖️ 你站谁？</div>
+    <div class="cta-options">
+      <div class="cta-btn">👑 弘历对</div>
+      <div class="cta-btn">🔮 赫妹对</div>
+      <div class="cta-btn">🤡 都不对</div>
+    </div>
+  </div>
+
+  <!-- 底部 -->
+  <div class="footer">
+    <div class="footer-tags">{{ tags }}</div>
+    <div class="footer-disclaimer">AI预测仅供娱乐，不构成任何投注建议</div>
+  </div>
+</div>
+</body>
+</html>

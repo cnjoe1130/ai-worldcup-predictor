@@ -1,0 +1,49 @@
+# 赛程提取Prompt
+
+从以下文本中提取比赛信息，返回JSON格式：
+
+## 输入格式
+比赛信息文本（来自Wikipedia或FIFA官网）
+
+## 输出格式
+```json
+[
+  {
+    "team_a": "队名",
+    "team_b": "队名",
+    "time": "北京时间",
+    "group": "组别",
+    "venue": "球场"
+  }
+]
+```
+
+## 示例
+输入：
+```
+Tuesday 24 June 2026
+Portugal 01:00 Uzbekistan
+First Stage · Group K · Houston Stadium
+England 04:00 Ghana
+First Stage · Group L · Boston Stadium
+```
+
+输出：
+```json
+[
+  {
+    "team_a": "葡萄牙",
+    "team_b": "乌兹别克斯坦",
+    "time": "01:00",
+    "group": "K组",
+    "venue": "休斯顿体育场"
+  },
+  {
+    "team_a": "英格兰",
+    "team_b": "加纳",
+    "time": "04:00",
+    "group": "L组",
+    "venue": "波士顿体育场"
+  }
+]
+```
